@@ -1,0 +1,19 @@
+defaultEntryPoints = ["http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+[file]
+
+[backends]
+  [backends.backend1]
+    [backends.backend1.servers.server1]
+       url = "http://nginx:80"
+
+[frontends]
+  [frontends.frontend1]
+      backend = "backend1"
+      passHostHeader = true
+      [frontends.frontend1.routes.example]
+          rule = "Host:localhost"

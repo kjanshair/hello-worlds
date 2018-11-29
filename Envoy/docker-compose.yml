@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  front-envoy:
+    image: envoyproxy/envoy:latest
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    container_name: "envoy"
+    ports:
+      - "80:80"
+      - "8001:8001"
+
+  service1:
+    image: nginx:latest
+    container_name: "nginx"
