@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  fluentd:
+    image: fluent/fluentd:latest
+    container_name: fluentd
+    hostname: fluentd
+    networks:
+     - fluentd-net
+    ports:
+     - "24224:24224"
+    volumes:
+     - "./conf:/fluentd/etc"
+    environment:
+     - FLUENTD_CONF=fluentd.conf
+
+  httpd:
+    image: httpd:latest
+    container_name: httpd
+    hostname: httpd
+    networks:
+     - fluentd-net
+    ports:
+     - "80:80"
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: fluentd
+
+networks:
+  fluentd-net:
