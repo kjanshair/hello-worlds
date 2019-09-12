@@ -1,0 +1,38 @@
+version: '3'
+services:
+  vault:
+    image: vault:latest
+    container_name: vault
+    hostname: vault
+    environment:
+     - VAULT_ADDR=http://0.0.0.0:8200
+    ports:
+     - "8200:8200"
+    cap_add:
+     - IPC_LOCK
+    command: vault server -dev -dev-listen-address=0.0.0.0:8200
+    networks:
+      vault_net:
+        ipv4_address: 10.0.0.10
+
+  ssh-helper:
+    build: ssh-helper/.
+    image: ssh-helper
+    container_name: ssh-helper
+    hostname: ssh-helper
+    volumes:
+     - "./ssh-helper/sshd:/etc/pam.d/sshd"
+     - "./ssh-helper/config.hcl:/etc/vault-ssh-helper.d/config.hcl"
+    ports:
+     - "3000:22"
+    networks:
+      vault_net:
+        ipv4_address: 10.0.0.20
+
+networks:
+  vault_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+       - subnet: 10.0.0.0/24
