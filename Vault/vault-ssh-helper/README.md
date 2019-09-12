@@ -20,12 +20,12 @@ vault secrets enable ssh
 ```
 vault write ssh/roles/admin key_type=otp default_user=root cidr_list=0.0.0.0/0
 ```
-Get OTP:
+- Get OTP:
 ```
 vault write ssh/creds/admin ip=10.0.0.20
 ```
 
-Login to SSH server:
+- Login to SSH server:
 
 ```
 ssh root@localhost -p 3000
